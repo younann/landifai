@@ -1,6 +1,4 @@
-// PagePreview component for displaying the generated page
-import React from "react";
-import DOMPurify from "dompurify";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
 interface PagePreviewProps {
@@ -8,6 +6,18 @@ interface PagePreviewProps {
 }
 
 const PagePreview: React.FC<PagePreviewProps> = ({ code }) => {
+  const [pageUrl, setPageUrl] = useState<string>();
+
+  useEffect(() => {
+    const blob = new Blob([code], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    setPageUrl(url);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [code]);
+
   const downloadCode = () => {
     const blob = new Blob([code], { type: "text/html" });
     const url = URL.createObjectURL(blob);
@@ -17,12 +27,14 @@ const PagePreview: React.FC<PagePreviewProps> = ({ code }) => {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
-  //open code as html in new tab
+
   const openCode = () => {
     const blob = new Blob([code], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     window.open(url);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -41,7 +53,13 @@ const PagePreview: React.FC<PagePreviewProps> = ({ code }) => {
           Preview In New Tab
         </Button>
       </div>
-      <div dangerouslySetInnerHTML={{ __html: code }}></div>
+      {pageUrl && (
+        <iframe
+          src={pageUrl}
+          frameBorder="0"
+          className="w-full h-full"
+        ></iframe>
+      )}
     </div>
   );
 };

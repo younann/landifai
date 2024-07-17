@@ -1,7 +1,8 @@
+// ChatWindow component for interacting with AI
 "use client";
 
 import { useChat } from "ai/react";
-import React, { SVGProps, useState } from "react";
+import React, { SVGProps, useEffect, useState } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Loader from "./ui/loader";
@@ -13,23 +14,14 @@ interface ChatWindowProps {
 const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
   const { messages, input, handleSubmit, handleInputChange, isLoading } =
     useChat();
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-
+  const [loaderOn, setLoaderOn] = useState<Boolean>(false);
   const handleEmbedCode = async (messageContent: string) => {
     onCodeReceived(messageContent);
   };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imagePath = URL.createObjectURL(file);
-      setUploadedImage(imagePath);
-    }
-  };
-
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleInputChange(event);
-  };
+  const lastEmbedIndex = messages.findIndex((message) =>
+    message.content.includes("<!")
+  );
+  console.log(lastEmbedIndex);
 
   return (
     <div className="flex flex-col bg-background text-foreground p-6 gap-6 w-[50%]">
@@ -49,10 +41,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
               </Avatar>
             </div>
             <div className="flex flex-col gap-1">
-              <div className="font-medium">{message.role}</div>
+              <div className="font-medium">
+                {message.role === "user" ? "User: " : "LandifAi: "}
+              </div>
               <div className="prose text-muted-foreground">
                 {message.content.startsWith("<!") ? (
-                  isLoading ? (
+                  messages.indexOf(message) != lastEmbedIndex && isLoading ? (
                     <Loader />
                   ) : (
                     <Button onClick={() => handleEmbedCode(message.content)}>
@@ -72,15 +66,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
           type="file"
           name="image"
           id="imageupload"
-          onChange={handleFileChange}
           disabled={isLoading}
+          onChange={handleInputChange}
         />
-        <form onSubmit={handleSubmit} className="w-full">
+        <form onSubmit={handleSubmit}>
           <input
             className="bg-secondary h-20 w-full rounded-2xl px-2 text-white"
-            value={uploadedImage ? `${input} ${uploadedImage}` : input}
+            value={input}
             placeholder="Send a message..."
-            onChange={handleInput}
+            onChange={handleInputChange}
             disabled={isLoading}
           />
           <Button
