@@ -3,6 +3,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 
 export async function POST(req: Request) {
   const { messages }: { messages: CoreMessage[] } = await req.json();
+  console.log(messages);
 
   const openai = createOpenAI({
     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,

@@ -13,11 +13,22 @@ interface ChatWindowProps {
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
-  const { messages, input, handleSubmit, handleInputChange, isLoading, stop } =
+  const { messages, input, handleSubmit, handleInputChange, isLoading } =
     useChat();
   const handleEmbedCode = async (messageContent: string) => {
     onCodeReceived(messageContent);
   };
+  useEffect(() => {
+    if (
+      messages.length > 0 &&
+      messages[messages.length - 1].content.startsWith("<!")
+    ) {
+      setTimeout(() => {
+        handleEmbedCode(messages[messages.length - 1].content);
+      }, 5000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
 
   return (
     <div className="flex flex-col bg-background text-foreground p-6 gap-6 w-[50%] resize">
@@ -78,8 +89,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
           onSubmit={handleSubmit}
           className="w-[95%] flex justify-center items-center gap-2 h-20"
         >
-          <textarea
-            className="bg-secondary h-20 w-full rounded-2xl px-2 text-white placeholder:pt-2"
+          <input
+            className="bg-secondary h-20 w-full rounded-2xl px-2 text-white placeholder:pt-2 overflow-y-scroll"
             value={input}
             placeholder="Send a message..."
             onChange={handleInputChange}
