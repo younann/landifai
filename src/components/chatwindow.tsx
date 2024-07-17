@@ -1,4 +1,3 @@
-// ChatWindow component for interacting with AI
 "use client";
 
 import { useChat } from "ai/react";
@@ -14,13 +13,22 @@ interface ChatWindowProps {
 const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
   const { messages, input, handleSubmit, handleInputChange, isLoading } =
     useChat();
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
   const handleEmbedCode = async (messageContent: string) => {
-    // let code = messageContent.replace("!!!", "").trim();
-    // code = code
-    //   .replace(/```/g, "")
-    //   .replace(/html\s+<!DOCTYPE html>/, "<!DOCTYPE html>");
     onCodeReceived(messageContent);
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const imagePath = URL.createObjectURL(file);
+      setUploadedImage(imagePath);
+    }
+  };
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleInputChange(event);
   };
 
   return (
@@ -41,11 +49,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
               </Avatar>
             </div>
             <div className="flex flex-col gap-1">
-              <div>
-                {message.createdAt instanceof Date
-                  ? message.createdAt.toLocaleString()
-                  : ""}
-              </div>
               <div className="font-medium">{message.role}</div>
               <div className="prose text-muted-foreground">
                 {message.content.startsWith("<!") ? (
@@ -64,18 +67,30 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
           </div>
         ))}
       </div>
-      <div className="relative rounded-lg">
-        <form onSubmit={handleSubmit}>
-          <Button type="submit" size="icon" className="absolute top-3 right-3">
-            <ArrowUpIcon className="h-4 w-4" />
-          </Button>
+      <div className="relative rounded-lg flex items-center justify-between">
+        <input
+          type="file"
+          name="image"
+          id="imageupload"
+          onChange={handleFileChange}
+          disabled={isLoading}
+        />
+        <form onSubmit={handleSubmit} className="w-full">
           <input
             className="bg-secondary h-20 w-full rounded-2xl px-2 text-white"
-            value={input}
+            value={uploadedImage ? `${input} ${uploadedImage}` : input}
             placeholder="Send a message..."
-            onChange={handleInputChange}
+            onChange={handleInput}
             disabled={isLoading}
           />
+          <Button
+            type="submit"
+            size="icon"
+            className="absolute top-3 right-3"
+            onClick={handleSubmit}
+          >
+            <ArrowUpIcon className="h-4 w-4" />
+          </Button>
         </form>
       </div>
     </div>

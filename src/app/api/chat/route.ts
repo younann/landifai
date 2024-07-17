@@ -27,7 +27,7 @@ export async function POST(req: Request) {
         - Make Common and minimal layout that includes Hero , body and footer for every page
         - Use TailwindCSS for styling
         - Use the correct HTML tags for the needed elements
-        - Alwyas give me the code with one other text before or after it
+        - Alwyas give me the code with no other text before or after it
       When including images, use placeholders with descriptions such as {{image:description}}.`,
     messages,
   });
