@@ -2,11 +2,10 @@
 "use client";
 
 import { useChat } from "ai/react";
-import React, { SVGProps, useEffect, useState } from "react";
+import React, { SVGProps, useEffect, useRef, useState } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Loader from "./ui/loader";
-import { Textarea } from "./ui/textarea";
 
 interface ChatWindowProps {
   onCodeReceived: (code: string) => void;
@@ -14,7 +13,8 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
   const { messages, input, handleSubmit, handleInputChange, isLoading } =
-    useChat();
+    useChat({ initialInput: "Hi LandifAi" });
+
   const handleEmbedCode = async (messageContent: string) => {
     onCodeReceived(messageContent);
   };
@@ -96,14 +96,26 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
             onChange={handleInputChange}
             disabled={isLoading}
           />
-          <Button
-            type="submit"
-            size="icon"
-            className="w-9 h-20 rounded-2xl"
-            onClick={handleSubmit}
-          >
-            <ArrowUpIcon className="h-4 w-4" />
-          </Button>
+          {isLoading ? (
+            <div>
+              <button
+                type="button"
+                className="w-9 h-20 rounded-2xl bg-primary"
+                onClick={() => stop()}
+              >
+                Stop
+              </button>
+            </div>
+          ) : (
+            <Button
+              type="submit"
+              size="icon"
+              className="w-9 h-20 rounded-2xl"
+              onClick={handleSubmit}
+            >
+              <ArrowUpIcon className="h-4 w-4" />
+            </Button>
+          )}
         </form>
       </div>
     </div>
