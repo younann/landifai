@@ -14,14 +14,9 @@ interface ChatWindowProps {
 const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
   const { messages, input, handleSubmit, handleInputChange, isLoading } =
     useChat();
-  const [loaderOn, setLoaderOn] = useState<Boolean>(false);
   const handleEmbedCode = async (messageContent: string) => {
     onCodeReceived(messageContent);
   };
-  const lastEmbedIndex = messages.findIndex((message) =>
-    message.content.includes("<!")
-  );
-  console.log(lastEmbedIndex);
 
   return (
     <div className="flex flex-col bg-background text-foreground p-6 gap-6 w-[50%]">
@@ -46,7 +41,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
               </div>
               <div className="prose text-muted-foreground">
                 {message.content.startsWith("<!") ? (
-                  messages.indexOf(message) != lastEmbedIndex && isLoading ? (
+                  messages.indexOf(message) === messages.length - 1 &&
+                  isLoading ? (
                     <Loader />
                   ) : (
                     <Button onClick={() => handleEmbedCode(message.content)}>
