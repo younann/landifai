@@ -1,33 +1,80 @@
-// ChatWindow component for interacting with AI
 "use client";
 
 import { useChat } from "ai/react";
-import React, { SVGProps, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  SVGProps,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Loader from "./ui/loader";
+import Image from "next/image";
 
 interface ChatWindowProps {
   onCodeReceived: (code: string) => void;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
-  const { messages, input, handleSubmit, handleInputChange, isLoading } =
-    useChat({ initialInput: "Hi LandifAi" });
+  const {
+    messages,
+    input,
+    handleSubmit,
+    handleInputChange,
+    isLoading,
+    setInput,
+  } = useChat({ initialInput: "Hi LandifAi" });
+  const [uploadImage, setUploadImage] = useState<string>("");
 
   const handleEmbedCode = async (messageContent: string) => {
+    if (messageContent.startsWith("```html")) {
+      let code = messageContent.replace("```html", "").replace("", "");
+      code.endsWith("```") ? (code = code.replace("```", "")) : code;
+      onCodeReceived(code);
+      return;
+    }
+
     onCodeReceived(messageContent);
   };
-  useEffect(() => {
-    if (
-      messages.length > 0 &&
-      messages[messages.length - 1].content.startsWith("<!")
-    ) {
-      setTimeout(() => {
-        handleEmbedCode(messages[messages.length - 1].content);
-      }, 5000);
+
+  // useEffect(() => {
+  //   if (
+  //     messages.length > 0 &&
+  //     messages[messages.length - 1].content.startsWith("<!")
+  //   ) {
+  //     setTimeout(() => {
+  //       handleEmbedCode(messages[messages.length - 1].content);
+  //     }, 5000);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [messages]);
+
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
+    if (event.target.files === null) {
+      window.alert("no File selected, please chose a file");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const file = event.target.files ? event.target.files[0] : null;
+    // send the image to endpoint to upload it
+  }
+
+  useEffect(() => {
+    setUploadImage("");
+  }, [input]);
+
+  const chatContainer = useRef<HTMLDivElement>(null);
+
+  const scroll = () => {
+    const { offsetHeight, scrollHeight, scrollTop } =
+      chatContainer.current as HTMLDivElement;
+    if (scrollHeight >= scrollTop + offsetHeight) {
+      chatContainer.current?.scrollTo(0, scrollHeight + 200);
+    }
+  };
+
+  useEffect(() => {
+    scroll();
   }, [messages]);
 
   return (
@@ -37,7 +84,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
           LandifAI - landing page in seconds
         </h1>
       </div>
-      <div className="flex flex-col gap-4 overflow-y-scroll h-full ">
+      <div
+        className="flex flex-col gap-4 overflow-y-scroll h-full"
+        ref={chatContainer}
+      >
         {messages.map((message) => (
           <div className="flex items-start gap-4" key={message.id}>
             <div>
@@ -51,7 +101,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
                 {message.role === "user" ? "User: " : "LandifAi: "}
               </div>
               <div className="prose text-muted-foreground">
-                {message.content.startsWith("<!") ? (
+                {message.content.startsWith("<!") ||
+                message.content.startsWith("```html") ? (
                   messages.indexOf(message) === messages.length - 1 &&
                   isLoading ? (
                     <Loader />
@@ -68,6 +119,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
           </div>
         ))}
       </div>
+      <div>
+        {uploadImage && (
+          <Image src={uploadImage} alt="uploadedImg" width={120} height={120} />
+        )}
+      </div>
       <div className="relative rounded-lg flex items-center justify-around gap-2">
         <label
           htmlFor="imageupload"
@@ -81,7 +137,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
             id="imageupload"
             disabled={isLoading}
             className="sr-only"
-            onChange={handleInputChange}
+            onChange={handleFileChange}
           />
         </label>
 
