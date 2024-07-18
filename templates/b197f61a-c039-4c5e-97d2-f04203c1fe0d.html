@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="canonical" href="https://demo.themesberg.com/landwind/" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Products</title>
+    <!-- Meta SEO -->
+    <meta name="title" content="Apple Products">
+    <meta name="description" content="Discover the latest Apple products.">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <header class="bg-gray-100 dark:bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo" class="h-8 w-8">
+                <h1 class="ml-2 text-xl font-bold">Apple Products</h1>
+            </div>
+            <div class="flex items-center">
+                <button class="sun text-yellow-500 dark:hidden">☀️</button>
+                <button class="moon text-gray-500 hidden dark:block">🌙</button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="hero bg-gray-200 dark:bg-gray-700 py-20">
+            <div class="container mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-4">Discover the Latest Apple Products</h2>
+                <p class="mb-8">Experience innovation like never before.</p>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Shop Now</button>
+            </div>
+        </section>
+        <section class="about py-20">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">About Apple</h2>
+                <p class="mb-8">Apple Inc. is an American multinational technology company that specializes in consumer electronics, software, and online services.</p>
+            </div>
+        </section>
+        <section class="features py-20 bg-gray-100 dark:bg-gray-800">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">Features</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="feature p-4 bg-white dark:bg-gray-900 rounded-3xl shadow">
+                        <h3 class="text-xl font-bold mb-2">Innovative Design</h3>
+                        <p>Apple products are known for their sleek and innovative design.</p>
+                    </div>
+                    <div class="feature p-4 bg-white dark:bg-gray-900 rounded-3xl shadow">
+                        <h3 class="text-xl font-bold mb-2">High Performance</h3>
+                        <p>Experience unmatched performance with Apple’s latest technology.</p>
+                    </div>
+                    <div class="feature p-4 bg-white dark:bg-gray-900 rounded-3xl shadow">
+                        <h3 class="text-xl font-bold mb-2">User Friendly</h3>
+                        <p>Apple products are designed to be user-friendly and intuitive.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="contact py-20">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">Contact Us</h2>
+                <form class="max-w-lg mx-auto">
+                    <div class="mb-4">
+                        <input type="text" placeholder="Name" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700">
+                    </div>
+                    <div class="mb-4">
+                        <input type="email" placeholder="Email" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700">
+                    </div>
+                    <div class="mb-4">
+                        <input type="tel" placeholder="Phone" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700">
+                    </div>
+                    <div class="mb-4">
+                        <textarea placeholder="Message" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700"></textarea>
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Send</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
+    <script>
+        const sunIcon = document.querySelector('.sun');
+        const moonIcon = document.querySelector('.moon');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        if (
+            localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+
+        sunIcon.addEventListener('click', () => {
+            localStorage.theme = 'dark';
+            setTheme('dark');
+        });
+
+        moonIcon.addEventListener('click', () => {
+            localStorage.theme = 'light';
+            setTheme('light');
+        });
+    </script>
+</body>
+</html>

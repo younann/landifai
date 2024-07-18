@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="canonical" href="https://https://demo.themesberg.com/landwind/" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <!-- Meta SEO -->
+    <meta name="title" content="Todo List">
+    <meta name="description" content="A simple todo list application">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
+    <nav class="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center">
+        <div class="flex items-center">
+            <img src="https://via.placeholder.com/40" alt="Logo" class="h-10 w-10 mr-2">
+            <h1 class="text-xl font-bold">Todo List</h1>
+        </div>
+        <div>
+            <button class="sun text-yellow-500 dark:hidden">🌞</button>
+            <button class="moon hidden dark:block text-gray-500">🌜</button>
+        </div>
+    </nav>
+    <section class="container mx-auto p-4 flex-grow">
+        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">My Todos</h2>
+            <form id="todo-form" class="flex mb-4">
+                <input type="text" id="todo-input" class="flex-grow p-2 border border-gray-300 dark:border-gray-700 rounded-l-lg focus:outline-none" placeholder="Add a new todo">
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded-r-lg">Add</button>
+            </form>
+            <ul id="todo-list" class="list-disc pl-5">
+                <!-- Todo items will be appended here -->
+            </ul>
+        </div>
+    </section>
+    <script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
+    <script>
+        const sunIcon = document.querySelector('.sun');
+        const moonIcon = document.querySelector('.moon');
+
+        // Function to set theme based on user preference
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        // Check for stored theme or system preference on page load
+        if (
+            localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+
+        sunIcon.addEventListener('click', () => {
+            localStorage.theme = 'dark';
+            setTheme('dark');
+        });
+
+        moonIcon.addEventListener('click', () => {
+            localStorage.theme = 'light';
+            setTheme('light');
+        });
+
+        const todoForm = document.getElementById('todo-form');
+        const todoInput = document.getElementById('todo-input');
+        const todoList = document.getElementById('todo-list');
+
+        todoForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const todoText = todoInput.value.trim();
+            if (todoText !== '') {
+                const li = document.createElement('li');
+                li.className = 'flex justify-between items-center p-2 border-b border-gray-300 dark:border-gray-700';
+                li.innerHTML = `
+                    <span>${todoText}</span>
+                    <button class="delete-todo text-red-500">Delete</button>
+                `;
+                todoList.appendChild(li);
+                todoInput.value = '';
+            }
+        });
+
+        todoList.addEventListener('click', function(event) {
+            if (event.target.classList.contains('delete-todo')) {
+                const li = event.target.parentElement;
+                todoList.removeChild(li);
+            }
+        });
+    </script>
+</body>
+</html>

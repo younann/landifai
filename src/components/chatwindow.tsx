@@ -13,11 +13,23 @@ import { Button } from "@/components/ui/button";
 import Loader from "./ui/loader";
 import Image from "next/image";
 
+import UploadImage from "@/components/uploadImage";
+import { Cloudinary } from "@cloudinary/url-gen";
+import { AdvancedImage, responsive, placeholder } from "@cloudinary/react";
+import Link from "next/link";
+
 interface ChatWindowProps {
   onCodeReceived: (code: string) => void;
+  link: string;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived, link }) => {
+  type Message = {
+    id: string;
+    role: "system" | "user" | "assistant";
+    content: any;
+  };
+
   const {
     messages,
     input,
@@ -25,7 +37,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
     handleInputChange,
     isLoading,
     setInput,
-  } = useChat({ initialInput: "Hi LandifAi" });
+    setMessages,
+  } = useChat({
+    initialInput: "Hi LandifAi",
+  });
   const [uploadImage, setUploadImage] = useState<string>("");
 
   const handleEmbedCode = async (messageContent: string) => {
@@ -39,29 +54,46 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
     onCodeReceived(messageContent);
   };
 
-  // useEffect(() => {
-  //   if (
-  //     messages.length > 0 &&
-  //     messages[messages.length - 1].content.startsWith("<!")
-  //   ) {
-  //     setTimeout(() => {
-  //       handleEmbedCode(messages[messages.length - 1].content);
-  //     }, 5000);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [messages]);
+  const [publicId, setPublicId] = useState("");
+  const [cloudName] = useState("dzlca45bc");
+  const [uploadPreset] = useState("pr2es232t");
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
-    if (event.target.files === null) {
-      window.alert("no File selected, please chose a file");
-    }
-    const file = event.target.files ? event.target.files[0] : null;
-    // send the image to endpoint to upload it
-  }
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [uwConfig] = useState({
+    cloudName,
+    uploadPreset,
+    // cropping: true, //add a cropping step
+    // showAdvancedOptions: true,  //add advanced options (public_id and tag)
+    sources: ["local", "url"], // restrict the upload sources to URL and local files
+    // multiple: false,  //restrict upload to a single file
+    // folder: "user_images", //upload files to the specified folder
+    // tags: ["users", "profile"], //add the given tags to the uploaded files
+    // context: {alt: "user_uploaded"}, //add the given context data to the uploaded files
+    // clientAllowedFormats: ["images"], //restrict uploading to image files only
+    // maxImageFileSize: 2000000,  //restrict file size to less than 2MB
+    // maxImageWidth: 2000, //Scales the image down to a width of 2000 pixels before uploading
+    // theme: "purple", //change to a purple theme
+  });
+
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName,
+    },
+  });
+
+  const myImage = cld.image(publicId);
+  useEffect(() => {
+    setInput(myImage.toURL());
+    setUploadImage(myImage.toURL());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publicId]);
 
   useEffect(() => {
-    setUploadImage("");
-  }, [input]);
+    console.log(link);
+
+    if (link && link != "") setIsOpen(true);
+  }, [link]);
 
   const chatContainer = useRef<HTMLDivElement>(null);
 
@@ -74,11 +106,33 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
   };
 
   useEffect(() => {
+    if (uploadImage != "") setUploadImage("");
     scroll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   return (
     <div className="flex flex-col bg-background text-foreground p-6 gap-6 w-[50%] resize">
+      {!isOpen && (
+        <div className="bg-secondary p-6 rounded-lg shadow-lg w-full">
+          <h3 className="text-2xl font-bold mb-4">Deployment Successful!</h3>
+          <p className="text-white mb-6">
+            Congratulations, your application has been successfully deployed.
+          </p>
+          <Link
+            href={link}
+            className="block mb-4 text-primary-foreground hover:underline"
+          >
+            View Deployed App
+          </Link>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+          >
+            Close
+          </button>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">
           LandifAI - landing page in seconds
@@ -125,22 +179,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
         )}
       </div>
       <div className="relative rounded-lg flex items-center justify-around gap-2">
-        <label
-          htmlFor="imageupload"
-          className="bg-primary w-9 h-20 flex justify-center items-center rounded-2xl hover:bg-white hover:text-primary"
-        >
-          <UploadIcon />
-
-          <input
-            type="file"
-            name="image"
-            id="imageupload"
-            disabled={isLoading}
-            className="sr-only"
-            onChange={handleFileChange}
-          />
-        </label>
-
+        <UploadImage uwConfig={uwConfig} setPublicId={setPublicId} />
         <form
           onSubmit={handleSubmit}
           className="w-[95%] flex justify-center items-center gap-2 h-20"
@@ -156,7 +195,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
             <div>
               <button
                 type="button"
-                className="w-9 h-20 rounded-2xl bg-primary"
+                className="w-12 h-20 rounded-2xl bg-red-500"
                 onClick={() => stop()}
               >
                 Stop
@@ -166,7 +205,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived }) => {
             <Button
               type="submit"
               size="icon"
-              className="w-9 h-20 rounded-2xl"
+              className="w-12 h-20 rounded-2xl"
               onClick={handleSubmit}
             >
               <ArrowUpIcon className="h-4 w-4" />
@@ -196,27 +235,6 @@ function ArrowUpIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
     >
       <path d="m5 12 7-7 7 7" />
       <path d="M12 19V5" />
-    </svg>
-  );
-}
-
-function UploadIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="17 8 12 3 7 8" />
-      <line x1="12" x2="12" y1="3" y2="15" />
     </svg>
   );
 }

@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="canonical" href="https://demo.themesberg.com/landwind/" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Dashboard</title>
+    <!-- Meta SEO -->
+    <meta name="title" content="Stock Market Dashboard">
+    <meta name="description" content="A modern stock market dashboard with charts and a call to action for starting trading.">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <nav class="bg-white dark:bg-gray-800 shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="shrink-0 flex items-center">
+                        <img class="h-8 w-8" src="https://via.placeholder.com/50" alt="Logo">
+                        <span class="ml-2 text-xl font-bold">Stock Market Dashboard</span>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button class="sun text-yellow-500 dark:text-yellow-300 mr-2">☀️</button>
+                    <button class="moon text-gray-500 dark:text-gray-300">🌙</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-gray-200 dark:bg-gray-700 py-20">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-bold mb-4">Welcome to the Stock Market Dashboard</h1>
+            <p class="text-lg mb-8">Track your stocks and start trading today!</p>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Start Trading</button>
+        </div>
+    </header>
+
+    <main class="container mx-auto py-10">
+        <section id="charts" class="mb-10">
+            <h2 class="text-2xl font-bold mb-4">Stock Charts</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
+                    <canvas id="chart1"></canvas>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
+                    <canvas id="chart2"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="bg-gray-200 dark:bg-gray-700 p-8 rounded shadow">
+            <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
+            <form>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <input type="text" placeholder="Name" class="p-2 rounded border border-gray-300 dark:border-gray-600">
+                    <input type="tel" placeholder="Phone" class="p-2 rounded border border-gray-300 dark:border-gray-600">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <input type="email" placeholder="Email" class="p-2 rounded border border-gray-300 dark:border-gray-600">
+                    <textarea placeholder="Message" class="p-2 rounded border border-gray-300 dark:border-gray-600"></textarea>
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx1 = document.getElementById('chart1').getContext('2d');
+        const ctx2 = document.getElementById('chart2').getContext('2d');
+
+        const chart1 = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'Stock A',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const chart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'Stock B',
+                    data: [28, 48, 40, 19, 86, 27, 90],
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const sunIcon = document.querySelector('.sun');
+        const moonIcon = document.querySelector('.moon');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        if (
+            localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+
+        sunIcon.addEventListener('click', () => {
+            localStorage.theme = 'dark';
+            setTheme('dark');
+        });
+
+        moonIcon.addEventListener('click', () => {
+            localStorage.theme = 'light';
+            setTheme('light');
+        });
+    </script>
+</body>
+</html>

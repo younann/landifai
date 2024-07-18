@@ -3,9 +3,10 @@ import { Button } from "./ui/button";
 
 interface PagePreviewProps {
   code: string;
+  onLinkReceived: (link: string) => void;
 }
 
-const PagePreview: React.FC<PagePreviewProps> = ({ code }) => {
+const PagePreview: React.FC<PagePreviewProps> = ({ code, onLinkReceived }) => {
   const [pageUrl, setPageUrl] = useState<string>();
 
   useEffect(() => {
@@ -40,8 +41,9 @@ const PagePreview: React.FC<PagePreviewProps> = ({ code }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-      })
+        onLinkReceived(data.data);
+        console.log(data.data);
+      });
   };
 
   const openCode = () => {
