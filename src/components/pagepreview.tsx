@@ -30,6 +30,20 @@ const PagePreview: React.FC<PagePreviewProps> = ({ code }) => {
     URL.revokeObjectURL(url);
   };
 
+  const deployCode = () => {
+    fetch(`/api/deploy`, {
+      method: "POST",
+      body: JSON.stringify({ code: encodeURIComponent(code) }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+  };
+
   const openCode = () => {
     const blob = new Blob([code], { type: "text/html" });
     const url = URL.createObjectURL(blob);
@@ -51,6 +65,12 @@ const PagePreview: React.FC<PagePreviewProps> = ({ code }) => {
           onClick={openCode}
         >
           Preview In New Tab
+        </Button>
+        <Button
+          className="hover:bg-white hover:text-primary"
+          onClick={deployCode}
+        >
+          Deploy
         </Button>
       </div>
 
