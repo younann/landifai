@@ -17,13 +17,19 @@ import UploadImage from "@/components/uploadImage";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage, responsive, placeholder } from "@cloudinary/react";
 import Link from "next/link";
+import { Textarea } from "./ui/textarea";
 
 interface ChatWindowProps {
   onCodeReceived: (code: string) => void;
+  setGenerating: (status: Boolean) => void;
   link: string;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived, link }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({
+  onCodeReceived,
+  link,
+  setGenerating,
+}) => {
   type Message = {
     id: string;
     role: "system" | "user" | "assistant";
@@ -58,8 +64,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived, link }) => {
   const [cloudName] = useState("dzlca45bc");
   const [uploadPreset] = useState("pr2es232t");
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const [uwConfig] = useState({
     cloudName,
     uploadPreset,
@@ -84,24 +88,32 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived, link }) => {
 
   const myImage = cld.image(publicId);
   useEffect(() => {
-    setInput(myImage.toURL());
-    setUploadImage(myImage.toURL());
+    if (publicId) {
+      setInput(myImage.toURL());
+      setUploadImage(myImage.toURL());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicId]);
 
-  useEffect(() => {
-    console.log(link);
-
-    if (link && link != "") setIsOpen(true);
-  }, [link]);
-
   const chatContainer = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isLoading) setGenerating(true);
+    else setGenerating(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
 
   const scroll = () => {
     const { offsetHeight, scrollHeight, scrollTop } =
       chatContainer.current as HTMLDivElement;
     if (scrollHeight >= scrollTop + offsetHeight) {
       chatContainer.current?.scrollTo(0, scrollHeight + 200);
+    }
+  };
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
     }
   };
 
@@ -113,26 +125,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived, link }) => {
 
   return (
     <div className="flex flex-col bg-background text-foreground p-6 gap-6 w-[50%] resize">
-      {!isOpen && (
-        <div className="bg-secondary p-6 rounded-lg shadow-lg w-full">
-          <h3 className="text-2xl font-bold mb-4">Deployment Successful!</h3>
-          <p className="text-white mb-6">
-            Congratulations, your application has been successfully deployed.
-          </p>
-          <Link
-            href={link}
-            className="block mb-4 text-primary-foreground hover:underline"
-          >
-            View Deployed App
-          </Link>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-          >
-            Close
-          </button>
-        </div>
-      )}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">
           LandifAI - landing page in seconds
@@ -184,12 +176,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onCodeReceived, link }) => {
           onSubmit={handleSubmit}
           className="w-[95%] flex justify-center items-center gap-2 h-20"
         >
-          <input
+          <Textarea
             className="bg-secondary h-20 w-full rounded-2xl px-2 text-white placeholder:pt-2 overflow-y-scroll"
             value={input}
             placeholder="Send a message..."
             onChange={handleInputChange}
             disabled={isLoading}
+            onKeyDown={handleKeyPress}
           />
           {isLoading ? (
             <div>

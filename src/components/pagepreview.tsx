@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
 
 interface PagePreviewProps {
   code: string;
   onLinkReceived: (link: string) => void;
+  status: Boolean;
 }
 
-const PagePreview: React.FC<PagePreviewProps> = ({ code, onLinkReceived }) => {
+const PagePreview: React.FC<PagePreviewProps> = ({
+  code,
+  onLinkReceived,
+  status,
+}) => {
   const [pageUrl, setPageUrl] = useState<string>();
 
   useEffect(() => {
@@ -60,7 +66,7 @@ const PagePreview: React.FC<PagePreviewProps> = ({ code, onLinkReceived }) => {
           className="hover:bg-white hover:text-primary"
           onClick={downloadCode}
         >
-          Download
+          Export Code
         </Button>
         <Button
           className="hover:bg-white hover:text-primary"
@@ -83,12 +89,16 @@ const PagePreview: React.FC<PagePreviewProps> = ({ code, onLinkReceived }) => {
           <span className="w-3 h-3 rounded-full bg-green-400"></span>
         </div>
         <div className="bg-gray-100 border-t-0 w-full h-[95%]">
-          {pageUrl && (
-            <iframe
-              src={pageUrl}
-              frameBorder="0"
-              className="w-full h-full"
-            ></iframe>
+          {status ? (
+            <Skeleton />
+          ) : (
+            pageUrl && (
+              <iframe
+                src={pageUrl}
+                frameBorder="0"
+                className="w-full h-full"
+              ></iframe>
+            )
           )}
         </div>
       </div>

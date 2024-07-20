@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="canonical" href="https://demo.themesberg.com/landwind/" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Younan Nwesre - Web Developer Portfolio</title>
+    <!-- Meta SEO -->
+    <meta name="title" content="Younan Nwesre - Web Developer Portfolio">
+    <meta name="description" content="Portfolio of Younan Nwesre, a skilled web developer specializing in JavaScript, Java, React/Next.js, and DevOps.">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-blue-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
+    <script>
+        const sunIcon = document.querySelector('.sun');
+        const moonIcon = document.querySelector('.moon');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        if (
+            localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+
+        sunIcon.addEventListener('click', () => {
+            localStorage.theme = 'dark';
+            setTheme('dark');
+        });
+
+        moonIcon.addEventListener('click', () => {
+            localStorage.theme = 'light';
+            setTheme('light');
+        });
+    </script>
+
+    <nav class="bg-blue-600 dark:bg-blue-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-white text-2xl font-bold">Younan Nwesre</div>
+            <div class="flex space-x-4">
+                <button class="sun text-white">🌞</button>
+                <button class="moon text-white">🌜</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-blue-500 dark:bg-blue-700 text-white text-center py-20">
+        <h1 class="text-4xl font-bold mb-4">Hi, I'm Younan Nwesre</h1>
+        <p class="text-xl mb-8">A Web Developer specializing in JavaScript, Java, React/Next.js, and DevOps</p>
+        <a href="#contact" class="bg-white text-blue-500 dark:text-blue-700 px-6 py-3 rounded-full font-semibold">Hire Me</a>
+    </header>
+
+    <section id="about" class="py-20">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-8">About Me</h2>
+            <p class="text-lg mb-4">I am a passionate web developer with expertise in JavaScript, Java, and modern frameworks like React and Next.js. I also have experience in DevOps, Git, and GitHub, ensuring smooth and efficient development workflows.</p>
+        </div>
+    </section>
+
+    <section id="skills" class="bg-blue-100 dark:bg-gray-800 py-20">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-8">Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">JavaScript</h3>
+                    <p>Expert in modern JavaScript, including ES6+ features and frameworks.</p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">Java</h3>
+                    <p>Proficient in Java for backend development and enterprise applications.</p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">React/Next.js</h3>
+                    <p>Specialist in building modern web applications using React and Next.js.</p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">DevOps</h3>
+                    <p>Experience in DevOps practices, including CI/CD pipelines and cloud services.</p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">Git & GitHub</h3>
+                    <p>Proficient in version control using Git and collaboration on GitHub.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-8">Contact Me</h2>
+            <form class="max-w-lg mx-auto">
+                <div class="mb-4">
+                    <input type="text" placeholder="Name" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600">
+                </div>
+                <div class="mb-4">
+                    <input type="email" placeholder="Email" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600">
+                </div>
+                <div class="mb-4">
+                    <input type="tel" placeholder="Phone" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600">
+                </div>
+                <div class="mb-4">
+                    <textarea placeholder="Message" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600"></textarea>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold">Send Message</button>
+            </form>
+        </div>
+    </section>
+</body>
+</html>

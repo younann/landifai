@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="canonical" href="https://https://demo.themesberg.com/landwind/" />
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stroy Bean Coffee Shop</title>
+<!-- Meta SEO -->
+<meta name="title" content="Stroy Bean Coffee Shop">
+<meta name="description" content="Welcome to Stroy Bean, your cozy coffee shop. Discover our products and get in touch with us.">
+<meta name="robots" content="index, follow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="language" content="English">
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    brown: {
+                        100: '#EDE0D4',
+                        200: '#D8C3A5',
+                        300: '#A67B5B',
+                        400: '#8C5E3C',
+                        500: '#6D4C41',
+                        600: '#5D4037',
+                        700: '#4E342E',
+                        800: '#3E2723',
+                        900: '#2C1B18',
+                    },
+                },
+            },
+        },
+    }
+</script>
+</head>
+<body class="bg-brown-100 dark:bg-brown-900 text-gray-900 dark:text-gray-100">
+<nav class="bg-brown-500 dark:bg-brown-700 p-4 flex justify-between items-center">
+    <div class="flex items-center">
+        <img src="https://via.placeholder.com/50" alt="Stroy Bean Logo" class="h-10 w-10">
+        <span class="ml-3 text-xl font-bold">Stroy Bean</span>
+    </div>
+    <div class="flex items-center">
+        <button class="sun hidden dark:block text-yellow-500 text-2xl mr-4">☀️</button>
+        <button class="moon block dark:hidden text-gray-500 text-2xl">🌙</button>
+    </div>
+</nav>
+<main>
+    <section class="hero bg-cover bg-center h-screen flex items-center justify-center" style="background-image: url('https://via.placeholder.com/1920x1080');">
+        <div class="text-center text-white">
+            <h1 class="text-5xl font-bold mb-4">Welcome to Stroy Bean</h1>
+            <p class="text-xl mb-6">Your cozy coffee shop</p>
+            <button class="bg-brown-600 hover:bg-brown-700 text-white font-bold py-2 px-4 rounded">Explore Our Products</button>
+        </div>
+    </section>
+    <section class="products py-16 bg-brown-200 dark:bg-brown-800">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Our Products</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="product bg-white dark:bg-brown-700 p-6 rounded-lg shadow-lg">
+                    <img src="https://via.placeholder.com/300" alt="Espresso" class="w-full h-48 object-cover mb-4 rounded">
+                    <h3 class="text-2xl font-bold mb-2">Espresso</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Rich and bold espresso shot.</p>
+                </div>
+                <div class="product bg-white dark:bg-brown-700 p-6 rounded-lg shadow-lg">
+                    <img src="https://via.placeholder.com/300" alt="Latte" class="w-full h-48 object-cover mb-4 rounded">
+                    <h3 class="text-2xl font-bold mb-2">Latte</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Smooth and creamy latte.</p>
+                </div>
+                <div class="product bg-white dark:bg-brown-700 p-6 rounded-lg shadow-lg">
+                    <img src="https://via.placeholder.com/300" alt="StoryBean Coffee Shot" class="w-full h-48 object-cover mb-4 rounded">
+                    <h3 class="text-2xl font-bold mb-2">StoryBean Coffee Shot</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Signature StoryBean coffee shot.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="contact py-16 bg-brown-300 dark:bg-brown-900">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Contact Us</h2>
+            <form class="max-w-lg mx-auto">
+                <div class="mb-4">
+                    <input type="text" placeholder="Name" class="w-full p-3 rounded-lg bg-white dark:bg-brown-700 text-gray-900 dark:text-gray-100">
+                </div>
+                <div class="mb-4">
+                    <input type="email" placeholder="Email" class="w-full p-3 rounded-lg bg-white dark:bg-brown-700 text-gray-900 dark:text-gray-100">
+                </div>
+                <div class="mb-4">
+                    <input type="tel" placeholder="Phone" class="w-full p-3 rounded-lg bg-white dark:bg-brown-700 text-gray-900 dark:text-gray-100">
+                </div>
+                <div class="mb-4">
+                    <textarea placeholder="Message" class="w-full p-3 rounded-lg bg-white dark:bg-brown-700 text-gray-900 dark:text-gray-100"></textarea>
+                </div>
+                <button type="submit" class="bg-brown-600 hover:bg-brown-700 text-white font-bold py-2 px-4 rounded">Send Message</button>
+            </form>
+        </div>
+    </section>
+</main>
+<footer class="bg-brown-500 dark:bg-brown-700 p-4 text-center">
+    <div class="container mx-auto">
+        <div class="flex justify-center space-x-4 mb-4">
+            <a href="#" class="text-white">Facebook</a>
+            <a href="#" class="text-white">Twitter</a>
+            <a href="#" class="text-white">Instagram</a>
+        </div>
+        <p class="text-white">&copy; 2023 Stroy Bean. All rights reserved.</p>
+    </div>
+</footer>
+<script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
+<script>
+const sunIcon = document.querySelector('.sun');
+const moonIcon = document.querySelector('.moon');
+
+// Function to set theme based on user preference
+function setTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}
+
+// Check for stored theme or system preference on page load
+if (
+  localStorage.theme === 'dark' ||
+  (!('theme' in localStorage) &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches)
+) {
+  setTheme('dark');
+} else {
+  setTheme('light');
+}
+
+sunIcon.addEventListener('click', () => {
+  localStorage.theme = 'light';
+  setTheme('light');
+});
+
+moonIcon.addEventListener('click', () => {
+  localStorage.theme = 'dark';
+  setTheme('dark'); 
+});
+</script>
+</body>
+</html>
