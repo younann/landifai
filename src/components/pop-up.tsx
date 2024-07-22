@@ -49,7 +49,7 @@ export function PopUP(props: any) {
   );
 }
 
-function CircleCheckIcon(props) {
+function CircleCheckIcon(props: any) {
   return (
     <svg
       {...props}
@@ -69,7 +69,7 @@ function CircleCheckIcon(props) {
   );
 }
 
-function XIcon(props) {
+function XIcon(props: any) {
   return (
     <svg
       {...props}
