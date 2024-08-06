@@ -12,32 +12,6 @@
 - **Export and Deploy**: 
   - Seamlessly export the final code and deploy your webpage directly to [Netlify](https://www.netlify.com/) with a single click.
 
-## 🚀 Getting Started
-
-To clone and run this project locally:
-
-\`\`\`bash
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
-npm install
-npm run dev
-\`\`\`
-
-## 🏗️ Project Structure
-
-\`\`\`plaintext
-.
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── styles/
-│   └── ...
-├── public/
-├── README.md
-├── package.json
-└── ...
-\`\`\`
-
 ## 💡 How It Works
 
 1. **Chatbot Interaction**: Start a conversation with the chatbot to describe your website's goals, preferences, and styles.
